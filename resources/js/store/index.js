@@ -7,11 +7,11 @@ var ls = new SecureLS({ isCompression: false });
 Vue.use(Vuex);
 
 import { config } from './config';
-import { lab } from './lab';
 import { notification } from './notification';
 import { log } from './log';
+import { auth } from './auth';
 const dataState = new createPersistedState({
-    paths: ['auth.user','auth.cargos','auth.items','auth.groups','auth.reportPermissions','lab.paciente','lab.pruebaOrden','config.env','log.logs'],
+    paths: ['auth.user','config.env','log.logs'],
     storage: {
         getItem: (key) => ls.get(key),
         setItem: (key, value) => ls.set(key, value),
@@ -22,7 +22,7 @@ const dataState = new createPersistedState({
 export default new Vuex.Store({
     modules: {
         config,
-        lab,
+        auth,
         notification,
         log
     },

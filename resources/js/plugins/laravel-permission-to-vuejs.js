@@ -1,4 +1,4 @@
-import store from '../config/store/'
+import store from '../store/'
 export default {
     install(Vue, options) {
         Vue.prototype.barItem = function (value) {

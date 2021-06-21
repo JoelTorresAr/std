@@ -5,7 +5,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{{--    <meta name="viewport" content="user-scalable=no" />--}}
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- CSRF Token -->
     <link rel="shortcut icon" href="/img/escudo.svg" />
@@ -25,11 +24,6 @@
             $user = Auth::user();
         @endphp
         <App-Component :user="{{json_encode($user)}}"
-        :items="{{json_encode($user->BarItems()->get())}}"
-        :groups="{{json_encode($user->BarGroups()->pluck('Clave')->toArray())}}"
-        :cargos="{{json_encode($user->cargos->pluck('Cargo')->toArray())}}"
-        :specials="{{json_encode($user->SpecialPermissions()->get())}}"
-        :reportes="{{json_encode($user->ReportPermissions()->get())}}"
         :env="{{json_encode(config("app.env"))}}"
         />
     </div>

@@ -23,3 +23,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/partes', function () {
     return view('mesaPartes');
 })->name('partes');
+Route::get('/spa', 'SpaController@index')->name('spa.index');
+Route::get('/spa/{any}', 'SpaController@index')->name('spa')->where('any', '.*');

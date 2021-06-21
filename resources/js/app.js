@@ -8,6 +8,8 @@ window.Vue = require('vue');
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 //Plugins
+import LaravelPermissionToVueJS from './plugins/laravel-permission-to-vuejs'
+Vue.use(LaravelPermissionToVueJS)
 import vuetify from './plugins/vuetify';
 import router from './routes';
 import store from "./store";
