@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialogState" max-width="25vw">
+  <v-dialog v-model="dialogState" max-width="30vw">
     <v-card>
       <v-card-title>
         <span class="headline">{{ formTitle }}</span>
@@ -15,10 +15,50 @@
             >
             </v-text-field>
           </v-col>
+          <v-col cols="6" class="py-1 px-1">
+            <v-text-field
+              label="Apellido Paterno"
+              :error-messages="errors.nombre"
+              :disabled="actions === 'UPDATE'"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="6" class="py-1 px-1">
+            <v-text-field
+              label="Apellido Materno"
+              :error-messages="errors.nombre"
+              :disabled="actions === 'UPDATE'"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="12" class="py-1 px-1">
+            <v-text-field
+              label="Correo"
+              :error-messages="errors.nombre"
+              :disabled="actions === 'UPDATE'"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="6" class="py-1 px-1">
+            <v-text-field
+              label="Contraseña"
+              :error-messages="errors.nombre"
+              :disabled="actions === 'UPDATE'"
+            >
+            </v-text-field>
+          </v-col>
+          <v-col cols="6" class="py-1 px-1">
+            <v-text-field
+              label="Confirmar contraseña"
+              :error-messages="errors.nombre"
+              :disabled="actions === 'UPDATE'"
+            >
+            </v-text-field>
+          </v-col>
           <v-col cols="12" class="py-1 px-1">
             <v-autocomplete
               solo
-              label="Ubicacion"
+              label="Roles"
               v-model="editedItem.cantidad"
               :items="entriesUbicaciones"
               :error-messages="errors.cantidad"
@@ -75,8 +115,8 @@ export default {
   computed: {
     formTitle() {
       return this.actions === "CREATE"
-        ? "Formulario Nuevo usuario"
-        : "Formulario Actualizar usuario";
+        ? "Formulario nuevo usuario"
+        : "Formulario actualizar usuario";
     },
     dateLabel() {
       return this.actions === "UPDATE"

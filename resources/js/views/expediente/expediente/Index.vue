@@ -68,7 +68,7 @@
               color="primary"
               class="float-right text-xs mr-2"
               :loading="loading"
-              @click="openAlmacenForm()"
+              @click="showForm.expediente = true"
             >
               <i class="fa fa-plus"></i> &nbsp; REGISTRAR
             </v-btn>
@@ -79,28 +79,15 @@
             <b>{{ item.estado }}</b></v-chip
           >
         </template>
+        <template v-slot:item.doc="{ item }">
+          <v-btn x-small outlined color="primary darken-1" class="mr-2"
+            >Descargar</v-btn
+          >
+        </template>
         <template v-slot:item.actions="{ item }">
-          <v-menu bottom offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ma-2" v-bind="attrs" v-on="on" color="primary">
-                Acciones
-                <v-icon right dark>
-                  mdi-arrow-down-drop-circle-outline
-                </v-icon></v-btn
-              >
-            </template>
-            <v-list dense>
-              <v-list-item
-                v-if="can(clave, 'Modificar') && item.id_estado == 1"
-                @click="accionOne(item)"
-              >
-                <v-list-item-title class="blue--text">
-                  <v-icon color="blue" left dark> mdi-pencil-outline </v-icon>
-                  Primera Acción</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <v-btn x-small outlined color="green darken-1" class="mr-2"
+            >Editar</v-btn
+          >
         </template>
       </v-data-table>
       <v-row>
@@ -126,6 +113,10 @@
         </v-col>
       </v-row>
     </v-card-text>
+    <expediente-form
+      :dialog.sync="showForm.expediente"
+      :actions.sync="actionForm.expediente"
+    ></expediente-form>
   </v-card>
 </template>
 
@@ -135,7 +126,7 @@ export default {
     clave: { type: String, required: false, default: "CLAVESUBMODULO" },
   },
   components: {
-    //PrescripcionForm: () => import("./PrescripcionForm.vue"),
+    ExpedienteForm: () => import("./FormExpediente.vue"),
   },
   data: () => ({
     pageSizes: [3, 6, 9],
@@ -144,7 +135,7 @@ export default {
     headers: [],
     searchTipesItems: [],
     showForm: {
-      productionForm: false,
+      expediente: false,
       prescripcionDetalles: false,
       contabilizarProdForm: false,
     },
@@ -156,12 +147,36 @@ export default {
       totalPages: 0,
       pageSize: 9,
     },
-    actionForm: {},
+    actionForm: {
+        expediente: 'CREATE'
+    },
     itemSelected: null,
   }),
   mounted() {
     this.initialForm();
-    this.headers = [];
+    this.headers = [
+      { text: "N°", value: "id", sortable: false },
+      { text: "Persona", value: "persona", sortable: false },
+      { text: "Asunto", value: "asunto", sortable: false },
+      { text: "Email", value: "email", sortable: false },
+      { text: "Tip. Doc.", value: "tipo_documento", sortable: false },
+      { text: "Fecha Creación", value: "created_at", sortable: false },
+      { text: "Documento", value: "doc", sortable: false },
+      { text: "", value: "actions", sortable: false },
+    ];
+    this.entriesItems = [
+      {
+        id: 1,
+        persona: "Tania Carranza Blas",
+        asunto: "Solicitud de licencia",
+        email: "admin@hotmail.com",
+        tipo_documento: "DNI",
+        created_at: `${new Date()
+          .toLocaleString("en-GB", { timeZone: "America/Lima" })
+          .substr(0, 17)
+          .replace(",", "")}`,
+      },
+    ];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
     //this.loadItems();

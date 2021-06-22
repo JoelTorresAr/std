@@ -15,21 +15,6 @@
             >
             </v-text-field>
           </v-col>
-          <v-col cols="12" class="py-1 px-1">
-            <v-autocomplete
-              solo
-              label="Ubicacion"
-              v-model="editedItem.cantidad"
-              :items="entriesUbicaciones"
-              :error-messages="errors.cantidad"
-              append-outer-icon="mdi-map-marker-plus-outline"
-              @click:append-outer="showForm.ubicacion = true"
-              item-value="cantidad"
-              item-text="descripcion"
-              clearable
-            >
-            </v-autocomplete>
-          </v-col>
         </v-row>
       </v-card-text>
       <v-card-actions>
@@ -75,8 +60,8 @@ export default {
   computed: {
     formTitle() {
       return this.actions === "CREATE"
-        ? "Formulario Nuevo rol"
-        : "Formulario Actualizar rol";
+        ? "Formulario nuevo rol"
+        : "Formulario actualizar rol";
     },
     dateLabel() {
       return this.actions === "UPDATE"

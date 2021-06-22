@@ -80,27 +80,13 @@
           >
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-menu bottom offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ma-2" v-bind="attrs" v-on="on" color="primary">
-                Acciones
-                <v-icon right dark>
-                  mdi-arrow-down-drop-circle-outline
-                </v-icon></v-btn
-              >
-            </template>
-            <v-list dense>
-              <v-list-item
-                v-if="can(clave, 'Modificar') && item.id_estado == 1"
-                @click="accionOne(item)"
-              >
-                <v-list-item-title class="blue--text">
-                  <v-icon color="blue" left dark> mdi-pencil-outline </v-icon>
-                  Primera Acción</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <v-btn
+            x-small
+            outlined
+            color="green darken-1"
+            class="mr-2"
+            >Editar</v-btn
+          >
         </template>
       </v-data-table>
       <v-row>
@@ -127,8 +113,8 @@
       </v-row>
     </v-card-text>
     <usuario-form
-    :dialog.sync="showForm.usuario"
-    :actions.sync="actionForm.usuario"
+      :dialog.sync="showForm.usuario"
+      :actions.sync="actionForm.usuario"
     ></usuario-form>
   </v-card>
 </template>
@@ -159,13 +145,32 @@ export default {
       pageSize: 9,
     },
     actionForm: {
-        usuario: 'CREATE'
+      usuario: "CREATE",
     },
     itemSelected: null,
   }),
   mounted() {
     this.initialForm();
-    this.headers = [];
+    this.headers = [
+      { text: "Nombre", value: "name", sortable: false },
+      { text: "Ape. Paterno", value: "apellido_paterno", sortable: false },
+      { text: "Ape. Materno", value: "apellido_materno", sortable: false },
+      { text: "Email", value: "email", sortable: false },
+      { text: "Fecha Creación", value: "created_at", sortable: false },
+      { text: "", value: "actions", sortable: false },
+    ];
+    this.entriesItems = [
+      {
+        name: "admin",
+        apellido_paterno: "admin",
+        apellido_materno: "admin",
+        email: "admin@hotmail.com",
+        created_at: `${new Date()
+        .toLocaleString("en-GB", { timeZone: "America/Lima" })
+        .substr(0, 17)
+        .replace(",", "")}`,
+      },
+    ];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
     //this.loadItems();

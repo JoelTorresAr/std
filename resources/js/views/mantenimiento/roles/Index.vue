@@ -80,27 +80,21 @@
           >
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-menu bottom offset-y>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn class="ma-2" v-bind="attrs" v-on="on" color="primary">
-                Acciones
-                <v-icon right dark>
-                  mdi-arrow-down-drop-circle-outline
-                </v-icon></v-btn
-              >
-            </template>
-            <v-list dense>
-              <v-list-item
-                v-if="can(clave, 'Modificar') && item.id_estado == 1"
-                @click="accionOne(item)"
-              >
-                <v-list-item-title class="blue--text">
-                  <v-icon color="blue" left dark> mdi-pencil-outline </v-icon>
-                  Primera Acción</v-list-item-title
-                >
-              </v-list-item>
-            </v-list>
-          </v-menu>
+          <v-btn
+            x-small
+            outlined
+            color="green darken-1"
+            class="mr-2"
+            >Editar</v-btn
+          >
+          <v-btn
+            x-small
+            outlined
+            color="primary darken-1"
+            class="mr-2"
+            @click="showForm.rol_modulo = true"
+            >Modulos</v-btn
+          >
         </template>
       </v-data-table>
       <v-row>
@@ -126,9 +120,8 @@
         </v-col>
       </v-row>
     </v-card-text>
-    <roles-form
-    :dialog.sync="showForm.roles"
-    ></roles-form>
+    <roles-form :dialog.sync="showForm.roles"></roles-form>
+    <rol-modulo-form :dialog.sync="showForm.rol_modulo"></rol-modulo-form>
   </v-card>
 </template>
 
@@ -139,6 +132,7 @@ export default {
   },
   components: {
     RolesForm: () => import("./FormRoles.vue"),
+    RolModuloForm: () => import("./FormRolModulo.vue"),
   },
   data: () => ({
     pageSizes: [3, 6, 9],
@@ -148,6 +142,7 @@ export default {
     searchTipesItems: [],
     showForm: {
       roles: false,
+      rol_modulo: false,
     },
     search: {
       tipo: "",
@@ -162,7 +157,11 @@ export default {
   }),
   mounted() {
     this.initialForm();
-    this.headers = [];
+    this.headers = [
+      { text: "Nombre", value: "name", sortable: false },
+      { text: "", value: "actions",width:'20rem', sortable: false },
+    ];
+    this.entriesItems = [{ name: "administrador" }, { name: "jefe" }, { name: "secretaria" }];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
     //this.loadItems();
