@@ -918,7 +918,7 @@ var controlGroup = {
     icon: "mdi-file-document-outline",
     title: "Expedientes",
     to: {
-      name: "mantenimiento.usuarios"
+      name: "control.expediente"
     },
     clave: "FacturacionCatalogoServicios"
   }]
@@ -944,7 +944,7 @@ var expendientesGroup = {
     icon: "mdi-file-document-outline",
     title: "Expedientes",
     to: {
-      name: "mantenimiento.usuarios"
+      name: "expediente.expediente"
     },
     clave: "FacturacionCatalogoServicios"
   }]
@@ -1003,7 +1003,7 @@ var reportesGroup = {
     icon: "mdi-file-document-outline",
     title: "Expedientes",
     to: {
-      name: "mantenimiento.usuarios"
+      name: "reporte.expendiente"
     },
     clave: "FacturacionCatalogoServicios"
   }]

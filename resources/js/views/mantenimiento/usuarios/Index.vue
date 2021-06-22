@@ -1,221 +1,208 @@
 <template>
-  <div>
-    <v-toolbar outlined flat fixed class="mt-2">
+  <v-card>
+    <v-card-text class="pb-0">
+      <v-data-table
+        :headers="headers"
+        :items="entriesItems"
+        :loading="loading"
+        loading-text="Cargando..."
+        class="elevation-1"
+        disable-pagination
+        :hide-default-footer="true"
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>USUARIOS</v-toolbar-title>
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <v-row>
+              <v-col cols="auto" class="py-0">
+                <div class="input-group">
+                  <div style="width: 200px !important">
+                    <v-select
+                      dense
+                      solo
+                      hide-details
+                      single-line
+                      class="form-control"
+                      label="Tip. Busqusqueda"
+                      v-model="search.tipo"
+                      :items="searchTipesItems"
+                      item-value="id"
+                      item-text="value"
+                      persistent-hint
+                    ></v-select>
+                  </div>
+                  <v-text-field
+                    class="form-control my-0 py-0"
+                    style="width: 18rem !important"
+                    v-model="search.param"
+                    label="Parametro busqueda de almacenes"
+                    single-line
+                    hide-details
+                    v-on:keyup.enter="loadItems"
+                  ></v-text-field>
+                  <v-btn
+                    depressed
+                    class="btn btn-outline-secondary form-control"
+                    color="primary"
+                    :loading="loading"
+                    @click="loadItems"
+                  >
+                    Buscar
+                  </v-btn>
+                  <v-btn
+                    depressed
+                    class="btn btn-outline-secondary mb-2 form-control"
+                    color="secundary"
+                    :loading="loading"
+                    @click="limpiar()"
+                  >
+                    Limpiar
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+            <v-spacer></v-spacer>
+            <v-btn
+              depressed
+              color="primary"
+              class="float-right text-xs mr-2"
+              :loading="loading"
+              @click="showForm.usuario = true"
+            >
+              <i class="fa fa-plus"></i> &nbsp; REGISTRAR
+            </v-btn>
+          </v-toolbar>
+        </template>
+        <template v-slot:item.estado="{ item }">
+          <v-chip :color="item.estado === 'Abierto' ? 'green' : ''" x-small>
+            <b>{{ item.estado }}</b></v-chip
+          >
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-menu bottom offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="ma-2" v-bind="attrs" v-on="on" color="primary">
+                Acciones
+                <v-icon right dark>
+                  mdi-arrow-down-drop-circle-outline
+                </v-icon></v-btn
+              >
+            </template>
+            <v-list dense>
+              <v-list-item
+                v-if="can(clave, 'Modificar') && item.id_estado == 1"
+                @click="accionOne(item)"
+              >
+                <v-list-item-title class="blue--text">
+                  <v-icon color="blue" left dark> mdi-pencil-outline </v-icon>
+                  Primera Acción</v-list-item-title
+                >
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </v-data-table>
       <v-row>
-        <v-col cols="3" class="py-0">
+        <v-col cols="4" sm="3">
           <v-select
-            hide-details
-            single-line
-            dense
-            filled
-            label="Tip. Busq. Empleado"
-            v-model="tipBusSelecEmp"
-            :items="tiposBusquedasEmp"
-            item-value="id"
-            item-text="nombre"
-            persistent-hint
+            v-model="search.pageSize"
+            :items="pageSizes"
+            label="Elementos por página"
+            @change="handlePageSizeChange"
           ></v-select>
         </v-col>
-        <v-col cols="4" class="py-0">
-          <v-text-field
-            hide-details
-            single-line
-            v-model="searchValue"
-            v-on:keyup.enter="buscarEmpleado()"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="2" sm="2" md="1" class="py-0">
-          <v-btn depressed color="primary" :loading="loading" @click="buscarEmpleado()">
-            Buscar Empleado
-          </v-btn>
+
+        <v-col cols="12" sm="9">
+          <v-pagination
+            v-model="search.page"
+            :length="search.totalPages"
+            total-visible="7"
+            next-icon="mdi-menu-right"
+            prev-icon="mdi-menu-left"
+            @input="handlePageChange"
+            class="align-content-end"
+          ></v-pagination>
         </v-col>
       </v-row>
-    </v-toolbar>
-    <v-card>
-      <v-card-title> Empleados: </v-card-title>
-      <v-card-text class="pb-0">
-        <v-data-table
-          :headers="headers"
-          :items="items"
-          :loading="loading"
-          loading-text="Consultando empleados..."
-          class="elevation-1"
-          disable-pagination
-          :hide-default-footer="true"
-        >
-          <template v-slot:item.actions="{ item }">
-            <v-btn color="primary" fab x-small dark @click="addDiagnostic(item)">
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </template>
-          <template v-slot:item.cargos="{ item }">
-            <ul v-if="item.cargos.length > 0">
-              <li v-for="(cargo, i) in item.cargos" :key="i">
-                {{ cargo.Cargo }}
-              </li>
-            </ul>
-          </template> </v-data-table
-        ><v-row>
-          <v-col cols="4" sm="3">
-            <v-select
-              v-model="pageSize"
-              :items="pageSizes"
-              label="Items per Page"
-              @change="handlePageSizeChange"
-            ></v-select>
-          </v-col>
-
-          <v-col cols="12" sm="9">
-            <v-pagination
-              v-model="page"
-              :length="totalPages"
-              total-visible="7"
-              next-icon="mdi-menu-right"
-              prev-icon="mdi-menu-left"
-              @input="handlePageChange"
-            ></v-pagination>
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
-  </div>
+    </v-card-text>
+    <usuario-form
+    :dialog.sync="showForm.usuario"
+    :actions.sync="actionForm.usuario"
+    ></usuario-form>
+  </v-card>
 </template>
 
 <script>
 export default {
-  data: () => ({
-    page: 1,
-    totalPages: 0,
-    loading: false,
-    pageSize: 9,
-    pageSizes: [3, 6, 9],
-    items: [],
-    headers: [],
-    tipBusSelecEmp: "ApeNom",
-    tiposBusquedasEmp: [],
-    searchValue: null,
-  }),
-  watch: {
-    showModal(val) {
-      if (val == true) {
-        this.search();
-      }
-    },
+  props: {
+    clave: { type: String, required: false, default: "CLAVESUBMODULO" },
   },
+  components: {
+    UsuarioForm: () => import("./FormUsuario.vue"),
+  },
+  data: () => ({
+    pageSizes: [3, 6, 9],
+    loading: false,
+    entriesItems: [],
+    headers: [],
+    searchTipesItems: [],
+    showForm: {
+      usuario: false,
+    },
+    search: {
+      tipo: "",
+      param: "",
+      estadoBusSelec: "0",
+      page: 1,
+      totalPages: 0,
+      pageSize: 9,
+    },
+    actionForm: {
+        usuario: 'CREATE'
+    },
+    itemSelected: null,
+  }),
   mounted() {
-    this.headers = [
-      {
-        text: "Id",
-        align: "start",
-        sortable: false,
-        value: "IdEmpleado",
-      },
-      { text: "Apellidos y Nombres", value: "ApellidosNombres" },
-      { text: "DNI", value: "DNI" },
-      { text: "Condicion", value: "CondicionTrabajo" },
-      { text: "Tipo Emp.", value: "TipoEmpleado" },
-      { text: "Fecha Ingreso", value: "FechaIngreso" },
-      { text: "Cargos", value: "cargos" },
-      { text: "", value: "actions", sortable: false },
-    ];
-    this.tiposBusquedasEmp = [
-      { id: "CodigoPlanilla", nombre: "Codigo Planilla" },
-      { id: "DNI", nombre: "DNI" },
-      { id: "ApeNom", nombre: "Apell. y Nomb." },
-      { id: "IdEmpleado", nombre: "Id de Empleado" },
-    ];
-    this.loadItems();
+    this.initialForm();
+    this.headers = [];
+    this.searchTipesItems = [];
+    //this.search = await this.$store.dispatch("loadQueryParams", this.search);
+    //this.loadItems();
   },
   methods: {
     initialForm() {
-      this.page = 1;
-      this.totalPages = 0;
-      this.items = [];
+      this.search.page = 1;
+      this.search.totalPages = 0;
+      this.entriesItems = [];
     },
     handlePageChange(value) {
-      this.page = value;
+      this.search.page = value;
       this.loadItems();
     },
     handlePageSizeChange(size) {
-      this.pageSize = size;
-      this.page = 1;
+      this.search.pageSize = size;
+      this.search.page = 1;
       this.loadItems();
     },
-    swalMessage(message, title = "Advertencia!", icon = "warning") {
-      Swal.fire({
-        title: title,
-        text: message,
-        icon: icon,
-        confirmButtonText: "Ok",
-      });
-    },
     loadItems() {
+      //PAGINATED ITEMS OF PRESCRIPCIONES
       this.loading = true;
+      this.entriesItems = [];
       axios
-        .post(`/api/mantenimiento/empleados/listar`, {
-          page: this.page,
-          pagesize: this.pageSize,
-        })
+        .post("/api/ejemplo", this.search)
         .then(({ data }) => {
-          if (data.message === "OK") {
-            this.items = data.respuesta.data;
-            this.totalPages = data.respuesta.last_page;
-          } else {
-            this.swalMessage(data.message);
-          }
+          this.entriesItems = data.resultado.data;
+          this.totalPages = data.resultado.last_page;
+          //this.$store.dispatch("asignQueryParams", this.search);
+        })
+        .finally(() => {
           this.loading = false;
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status === 401) {
-            }
-          } else if (error.request) {
-            // console.log(error.request);
-          } else {
-            // console.log("Error", error.message);
-          }
-          // console.log(error.config);
         });
-    },
-    buscarEmpleado() {
-      this.loading = true;
-      axios
-        .post(`/api/mantenimiento/empleados/buscar`, {
-          tipo: this.tipBusSelecEmp,
-          parametro: this.searchValue,
-          page: this.page,
-          pagesize: this.pageSize,
-        })
-        .then(({ data }) => {
-          console.log(data);
-          if (data.message === "OK") {
-            this.items = data.respuesta.data;
-            this.totalPages = data.respuesta.last_page;
-          } else {
-            this.swalMessage(data.message);
-          }
-          this.loading = false;
-        })
-        .catch((error) => {
-          if (error.response) {
-            if (error.response.status === 401) {
-            }
-          } else if (error.request) {
-            // console.log(error.request);
-          } else {
-            // console.log("Error", error.message);
-          }
-          // console.log(error.config);
-        });
-    },
-    downloadInformePaciente(item) {
-      window.open(
-        `/laboratorio/orden/resultado/exportar/${item.IdOrdenLaboratorio}`,
-        "_blank"
-      );
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+</style>

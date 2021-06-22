@@ -1,6 +1,6 @@
 export const mantenimiento = {
     path: "/spa",
-    name: "homeSG",
+    name: "homeMT",
     //redirect: "/spa/laboratorio/orden",
     component: () =>
         import("../layouts/Dashboard.vue"),

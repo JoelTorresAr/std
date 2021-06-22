@@ -6,7 +6,7 @@ export const controlGroup = {
         {
             icon: "mdi-file-document-outline",
             title: "Expedientes",
-            to: { name: "mantenimiento.usuarios" },
+            to: { name: "control.expediente" },
             clave: "FacturacionCatalogoServicios",
         },
     ],

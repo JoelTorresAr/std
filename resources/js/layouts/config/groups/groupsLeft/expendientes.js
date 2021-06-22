@@ -6,7 +6,7 @@ export const expendientesGroup = {
         {
             icon: "mdi-file-document-outline",
             title: "Expedientes",
-            to: { name: "mantenimiento.usuarios" },
+            to: { name: "expediente.expediente" },
             clave: "FacturacionCatalogoServicios",
         },
     ],
