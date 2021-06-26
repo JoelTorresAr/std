@@ -9,49 +9,50 @@
           <v-col cols="12" class="py-1 px-1">
             <v-text-field
               label="Nombre"
-              v-model="editedItem.nombre"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              v-model="editedItem.name"
+              :error-messages="errors.name"
             >
             </v-text-field>
           </v-col>
           <v-col cols="6" class="py-1 px-1">
             <v-text-field
               label="Apellido Paterno"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              v-model="editedItem.apellido_paterno"
+              :error-messages="errors.apellido_paterno"
             >
             </v-text-field>
           </v-col>
           <v-col cols="6" class="py-1 px-1">
             <v-text-field
               label="Apellido Materno"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              v-model="editedItem.apellido_materno"
+              :error-messages="errors.apellido_materno"
             >
             </v-text-field>
           </v-col>
           <v-col cols="12" class="py-1 px-1">
             <v-text-field
               label="Correo"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              v-model="editedItem.email"
+              :error-messages="errors.email"
             >
             </v-text-field>
           </v-col>
           <v-col cols="6" class="py-1 px-1">
             <v-text-field
               label="Contraseña"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              type="password"
+              v-model="editedItem.password"
+              :error-messages="errors.password"
             >
             </v-text-field>
           </v-col>
           <v-col cols="6" class="py-1 px-1">
             <v-text-field
               label="Confirmar contraseña"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
+              type="password"
+              v-model="editedItem.password_confirmation"
+              :error-messages="errors.password_confirmation"
             >
             </v-text-field>
           </v-col>
@@ -88,17 +89,18 @@ export default {
     actions: { type: String, default: "CREATE" },
     item: { type: Object },
   },
-  components: {
-  },
+  components: {},
   data: () => ({
     loading: false,
     dialogoBusquedaPac: false,
     editedItem: {
       id: null,
-      nombre: null,
-      id_ubicacion: null,
-      ubicacion: null,
-      estado: null,
+      name: null,
+      apellido_paterno: null,
+      apellido_materno: null,
+      email: null,
+      password: null,
+      password_confirmation: null,
     },
     showForm: {
       ubicacion: false,
@@ -140,8 +142,12 @@ export default {
         if (val === false) {
           this.editedItem = {
             id: null,
-            nombre: null,
-            id_estado: null,
+            name: null,
+            apellido_paterno: null,
+            apellido_materno: null,
+            email: null,
+            password: null,
+            password_confirmation: null,
           };
           this.errors = [];
         }
@@ -154,16 +160,14 @@ export default {
     this.initState();
   },
   methods: {
-    initState() {
-
-    },
+    initState() {},
     save() {
       let id = this.$store.getters.GET_USER_ID;
       this.editedItem.id_empleado_apertura = id;
       let url_action =
         this.actions === "UPDATE"
-          ? "/api/oxigeno/prescripcion/update"
-          : "/api/oxigeno/prescripcion/store";
+          ? "/api/usuario/update"
+          : "/api/usuario/store";
       axios
         .post(url_action, this.editedItem)
         .then(({ data }) => {

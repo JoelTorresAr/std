@@ -36,7 +36,7 @@
                     class="form-control my-0 py-0"
                     style="width: 18rem !important"
                     v-model="search.param"
-                    label="Parametro busqueda de almacenes"
+                    label="Parametro busqueda"
                     single-line
                     hide-details
                     v-on:keyup.enter="loadItems"
@@ -80,11 +80,7 @@
           >
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-btn
-            x-small
-            outlined
-            color="green darken-1"
-            class="mr-2"
+          <v-btn x-small outlined color="green darken-1" class="mr-2"
             >Editar</v-btn
           >
         </template>
@@ -149,6 +145,16 @@ export default {
     },
     itemSelected: null,
   }),
+  watch: {
+    "actionForm.usuario": {
+      handler: function (val, oldVal) {
+        if (val === "SUCCESS") {
+          this.loadItems();
+          this.actionForm.almacen = "CREATE";
+        }
+      },
+    },
+  },
   mounted() {
     this.initialForm();
     this.headers = [
@@ -157,6 +163,7 @@ export default {
       { text: "Ape. Materno", value: "apellido_materno", sortable: false },
       { text: "Email", value: "email", sortable: false },
       { text: "Fecha Creación", value: "created_at", sortable: false },
+      { text: "Ultima Actualización", value: "updated_at", sortable: false },
       { text: "", value: "actions", sortable: false },
     ];
     this.entriesItems = [
@@ -166,14 +173,14 @@ export default {
         apellido_materno: "admin",
         email: "admin@hotmail.com",
         created_at: `${new Date()
-        .toLocaleString("en-GB", { timeZone: "America/Lima" })
-        .substr(0, 17)
-        .replace(",", "")}`,
+          .toLocaleString("en-GB", { timeZone: "America/Lima" })
+          .substr(0, 17)
+          .replace(",", "")}`,
       },
     ];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
-    //this.loadItems();
+    this.loadItems();
   },
   methods: {
     initialForm() {
@@ -195,7 +202,7 @@ export default {
       this.loading = true;
       this.entriesItems = [];
       axios
-        .post("/api/ejemplo", this.search)
+        .post("/api/usuario/index", this.search)
         .then(({ data }) => {
           this.entriesItems = data.resultado.data;
           this.totalPages = data.resultado.last_page;

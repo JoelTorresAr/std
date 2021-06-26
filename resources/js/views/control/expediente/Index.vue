@@ -36,7 +36,7 @@
                     class="form-control my-0 py-0"
                     style="width: 18rem !important"
                     v-model="search.param"
-                    label="Parametro busqueda de almacenes"
+                    label="Parametro busqueda"
                     single-line
                     hide-details
                     v-on:keyup.enter="loadItems"
@@ -182,11 +182,12 @@ export default {
       this.loadItems();
     },
     loadItems() {
+        console.log('log')
       //PAGINATED ITEMS OF PRESCRIPCIONES
       this.loading = true;
       this.entriesItems = [];
       axios
-        .post("/api/ejemplo", this.search)
+        .post("/api/usuario/index", this.search)
         .then(({ data }) => {
           this.entriesItems = data.resultado.data;
           this.totalPages = data.resultado.last_page;

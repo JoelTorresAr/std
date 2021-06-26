@@ -36,7 +36,7 @@
                     class="form-control my-0 py-0"
                     style="width: 18rem !important"
                     v-model="search.param"
-                    label="Parametro busqueda de almacenes"
+                    label="Parametro busqueda"
                     single-line
                     hide-details
                     v-on:keyup.enter="loadItems"
