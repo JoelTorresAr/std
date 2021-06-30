@@ -41,20 +41,10 @@ export default {
     editedItem: {
       id: null,
       nombre: null,
-      id_ubicacion: null,
-      ubicacion: null,
-      estado: null,
-    },
-    showForm: {
-      ubicacion: false,
-    },
-    action: {
-      ubicacion: "CREATE",
     },
     rules: {
       counter: (value) => 1 <= value <= 15 || "Min 1 - Max 15",
     },
-    entriesUbicaciones: [],
     errors: [],
   }),
   computed: {
@@ -67,9 +57,6 @@ export default {
       return this.actions === "UPDATE"
         ? "Fecha actualización"
         : "Fecha apertura";
-    },
-    timeLabel() {
-      return this.actions === "UPDATE" ? "Hora actualización" : "Hora apertura";
     },
     dialogState: {
       get() {
@@ -85,8 +72,7 @@ export default {
         if (val === false) {
           this.editedItem = {
             id: null,
-            nombre: null,
-            id_estado: null,
+            nombre: null
           };
           this.errors = [];
         }
@@ -107,8 +93,8 @@ export default {
       this.editedItem.id_empleado_apertura = id;
       let url_action =
         this.actions === "UPDATE"
-          ? "/api/oxigeno/prescripcion/update"
-          : "/api/oxigeno/prescripcion/store";
+          ? "/api/rol/update"
+          : "/api/rol/store";
       axios
         .post(url_action, this.editedItem)
         .then(({ data }) => {
@@ -117,7 +103,10 @@ export default {
               icon: "success",
               title: data.message,
             });
+            console.log('success')
             this.$emit("update:actions", "SUCCESS");
+            console.log(this.actions)
+
             this.dialogState = false;
           } else {
             Toast.fire({

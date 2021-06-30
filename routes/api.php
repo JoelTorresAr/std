@@ -19,4 +19,8 @@ Route::group(['namespace' => 'api'], function () {
         Route::post('index', 'UsuarioController@index');
         Route::post('store', 'UsuarioController@store');
     });
+    Route::prefix('rol')->group(function () {
+        Route::post('index', 'RolController@index');
+        Route::post('store', 'RolController@store');
+    });
 });

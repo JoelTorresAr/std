@@ -68,7 +68,7 @@
               color="primary"
               class="float-right text-xs mr-2"
               :loading="loading"
-              @click="showForm.roles = true"
+              @click="showForm.roles = true; actionForm.roles = 'CREATE'"
             >
               <i class="fa fa-plus"></i> &nbsp; REGISTRAR
             </v-btn>
@@ -85,6 +85,7 @@
             outlined
             color="green darken-1"
             class="mr-2"
+            @click="updateRol(item)"
             >Editar</v-btn
           >
           <v-btn
@@ -120,7 +121,11 @@
         </v-col>
       </v-row>
     </v-card-text>
-    <roles-form :dialog.sync="showForm.roles"></roles-form>
+    <roles-form
+      :dialog.sync="showForm.roles"
+      :actions.sync="actionForm.roles"
+      :item.sync="itemSelected"
+    ></roles-form>
     <rol-modulo-form :dialog.sync="showForm.rol_modulo"></rol-modulo-form>
   </v-card>
 </template>
@@ -152,19 +157,34 @@ export default {
       totalPages: 0,
       pageSize: 9,
     },
-    actionForm: {},
+    actionForm: {
+      roles: "CREATE",
+    },
     itemSelected: null,
   }),
+  watch: {
+    "actionForm.roles": {
+      handler: function (val, oldVal) {
+        if (val === "SUCCESS") {
+          this.loadItems();
+        }
+      },
+    },
+  },
   mounted() {
     this.initialForm();
     this.headers = [
-      { text: "Nombre", value: "name", sortable: false },
-      { text: "", value: "actions",width:'20rem', sortable: false },
+      { text: "Nombre", value: "nombre", sortable: false },
+      { text: "", value: "actions", width: "20rem", sortable: false },
     ];
-    this.entriesItems = [{ name: "administrador" }, { name: "jefe" }, { name: "secretaria" }];
+    this.entriesItems = [
+      { name: "administrador" },
+      { name: "jefe" },
+      { name: "secretaria" },
+    ];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
-    //this.loadItems();
+    this.loadItems();
   },
   methods: {
     initialForm() {
@@ -181,15 +201,20 @@ export default {
       this.search.page = 1;
       this.loadItems();
     },
+    updateRol(item) {
+      this.itemSelected = item;
+      this.actionForm.roles = "UPDATE";
+      this.showForm.roles = true;
+    },
     loadItems() {
       //PAGINATED ITEMS OF PRESCRIPCIONES
       this.loading = true;
       this.entriesItems = [];
       axios
-        .post("/api/ejemplo", this.search)
+        .post("/api/rol/index", this.search)
         .then(({ data }) => {
           this.entriesItems = data.resultado.data;
-          this.totalPages = data.resultado.last_page;
+          this.search.totalPages = data.resultado.last_page;
           //this.$store.dispatch("asignQueryParams", this.search);
         })
         .finally(() => {

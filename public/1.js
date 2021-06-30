@@ -219,7 +219,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.input-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  width: 10rem !important;\n  font-size: 0.8rem !important;\n}\n.span-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  width: 7rem !important;\n  font-size: 0.8rem !important;\n}\n.width-input-x-small[data-v-038ed7ca] {\n  width: 10rem !important;\n  font-size: 0.8rem !important;\n}\n.height-input-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  font-size: 0.8rem !important;\n}\n#btn-x-small[data-v-038ed7ca] {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n", ""]);
+exports.push([module.i, "\n.input-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  width: 10rem !important;\r\n  font-size: 0.8rem !important;\n}\n.span-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  width: 7rem !important;\r\n  font-size: 0.8rem !important;\n}\n.width-input-x-small[data-v-038ed7ca] {\r\n  width: 10rem !important;\r\n  font-size: 0.8rem !important;\n}\n.height-input-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  font-size: 0.8rem !important;\n}\n#btn-x-small[data-v-038ed7ca] {\r\n  width: 1.5rem;\r\n  height: 1.5rem;\n}\r\n", ""]);
 
 // exports
 

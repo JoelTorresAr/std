@@ -58,23 +58,13 @@ __webpack_require__.r(__webpack_exports__);
       dialogoBusquedaPac: false,
       editedItem: {
         id: null,
-        nombre: null,
-        id_ubicacion: null,
-        ubicacion: null,
-        estado: null
-      },
-      showForm: {
-        ubicacion: false
-      },
-      action: {
-        ubicacion: "CREATE"
+        nombre: null
       },
       rules: {
         counter: function counter(value) {
           return 1 <= value <= 15 || "Min 1 - Max 15";
         }
       },
-      entriesUbicaciones: [],
       errors: []
     };
   },
@@ -84,9 +74,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     dateLabel: function dateLabel() {
       return this.actions === "UPDATE" ? "Fecha actualización" : "Fecha apertura";
-    },
-    timeLabel: function timeLabel() {
-      return this.actions === "UPDATE" ? "Hora actualización" : "Hora apertura";
     },
     dialogState: {
       get: function get() {
@@ -104,8 +91,7 @@ __webpack_require__.r(__webpack_exports__);
         if (val === false) {
           this.editedItem = {
             id: null,
-            nombre: null,
-            id_estado: null
+            nombre: null
           };
           this.errors = [];
         }
@@ -125,7 +111,7 @@ __webpack_require__.r(__webpack_exports__);
 
       var id = this.$store.getters.GET_USER_ID;
       this.editedItem.id_empleado_apertura = id;
-      var url_action = this.actions === "UPDATE" ? "/api/oxigeno/prescripcion/update" : "/api/oxigeno/prescripcion/store";
+      var url_action = this.actions === "UPDATE" ? "/api/rol/update" : "/api/rol/store";
       axios.post(url_action, this.editedItem).then(function (_ref) {
         var data = _ref.data;
 
@@ -134,9 +120,11 @@ __webpack_require__.r(__webpack_exports__);
             icon: "success",
             title: data.message
           });
+          console.log('success');
 
           _this.$emit("update:actions", "SUCCESS");
 
+          console.log(_this.actions);
           _this.dialogState = false;
         } else {
           Toast.fire({

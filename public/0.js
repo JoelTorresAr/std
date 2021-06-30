@@ -285,7 +285,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.v-enter-active[data-v-533aa8e0],\n.v-leave-active[data-v-533aa8e0] {\n  transition: opacity 0.3s;\n}\n.v-enter[data-v-533aa8e0], .v-leave-to[data-v-533aa8e0] /* .fade-leave-active below version 2.1.8 */ {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.v-enter-active[data-v-533aa8e0],\r\n.v-leave-active[data-v-533aa8e0] {\r\n  transition: opacity 0.3s;\n}\n.v-enter[data-v-533aa8e0], .v-leave-to[data-v-533aa8e0] /* .fade-leave-active below version 2.1.8 */ {\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
