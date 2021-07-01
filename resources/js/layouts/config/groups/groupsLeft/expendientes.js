@@ -9,5 +9,17 @@ export const expendientesGroup = {
             to: { name: "expediente.expediente" },
             clave: "FacturacionCatalogoServicios",
         },
+        {
+            icon: "mdi-file-document-outline",
+            title: "Control",
+            to: { name: "control.expediente" },
+            clave: "FacturacionCatalogoServicios",
+        },
+        {
+            icon: "mdi-file-document-outline",
+            title: "Reportes",
+            to: { name: "reporte.expediente" },
+            clave: "FacturacionCatalogoServicios",
+        },
     ],
 };

@@ -900,32 +900,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/layouts/config/groups/groupsLeft/control.js":
-/*!******************************************************************!*\
-  !*** ./resources/js/layouts/config/groups/groupsLeft/control.js ***!
-  \******************************************************************/
-/*! exports provided: controlGroup */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "controlGroup", function() { return controlGroup; });
-var controlGroup = {
-  icon: "mdi-notebook-check-outline",
-  clave: "FC",
-  title: "Control Expendientes",
-  items: [{
-    icon: "mdi-file-document-outline",
-    title: "Expedientes",
-    to: {
-      name: "control.expediente"
-    },
-    clave: "FacturacionCatalogoServicios"
-  }]
-};
-
-/***/ }),
-
 /***/ "./resources/js/layouts/config/groups/groupsLeft/expendientes.js":
 /*!***********************************************************************!*\
   !*** ./resources/js/layouts/config/groups/groupsLeft/expendientes.js ***!
@@ -945,6 +919,20 @@ var expendientesGroup = {
     title: "Expedientes",
     to: {
       name: "expediente.expediente"
+    },
+    clave: "FacturacionCatalogoServicios"
+  }, {
+    icon: "mdi-file-document-outline",
+    title: "Control",
+    to: {
+      name: "control.expediente"
+    },
+    clave: "FacturacionCatalogoServicios"
+  }, {
+    icon: "mdi-file-document-outline",
+    title: "Reportes",
+    to: {
+      name: "reporte.expediente"
     },
     clave: "FacturacionCatalogoServicios"
   }]
@@ -985,32 +973,6 @@ var mantenimientoGroup = {
 
 /***/ }),
 
-/***/ "./resources/js/layouts/config/groups/groupsLeft/reportes.js":
-/*!*******************************************************************!*\
-  !*** ./resources/js/layouts/config/groups/groupsLeft/reportes.js ***!
-  \*******************************************************************/
-/*! exports provided: reportesGroup */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reportesGroup", function() { return reportesGroup; });
-var reportesGroup = {
-  icon: "mdi-file-pdf-outline",
-  clave: "FC",
-  title: "Reportes",
-  items: [{
-    icon: "mdi-file-document-outline",
-    title: "Expedientes",
-    to: {
-      name: "reporte.expendiente"
-    },
-    clave: "FacturacionCatalogoServicios"
-  }]
-};
-
-/***/ }),
-
 /***/ "./resources/js/layouts/config/groups/index.js":
 /*!*****************************************************!*\
   !*** ./resources/js/layouts/config/groups/index.js ***!
@@ -1023,13 +985,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "groupsLeft", function() { return groupsLeft; });
 /* harmony import */ var _groupsLeft_mantenimiento__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./groupsLeft/mantenimiento */ "./resources/js/layouts/config/groups/groupsLeft/mantenimiento.js");
 /* harmony import */ var _groupsLeft_expendientes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./groupsLeft/expendientes */ "./resources/js/layouts/config/groups/groupsLeft/expendientes.js");
-/* harmony import */ var _groupsLeft_reportes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./groupsLeft/reportes */ "./resources/js/layouts/config/groups/groupsLeft/reportes.js");
-/* harmony import */ var _groupsLeft_control__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./groupsLeft/control */ "./resources/js/layouts/config/groups/groupsLeft/control.js");
 
 
-
-
-var groupsLeft = [_groupsLeft_mantenimiento__WEBPACK_IMPORTED_MODULE_0__["mantenimientoGroup"], _groupsLeft_expendientes__WEBPACK_IMPORTED_MODULE_1__["expendientesGroup"], _groupsLeft_reportes__WEBPACK_IMPORTED_MODULE_2__["reportesGroup"], _groupsLeft_control__WEBPACK_IMPORTED_MODULE_3__["controlGroup"]];
+var groupsLeft = [_groupsLeft_mantenimiento__WEBPACK_IMPORTED_MODULE_0__["mantenimientoGroup"], _groupsLeft_expendientes__WEBPACK_IMPORTED_MODULE_1__["expendientesGroup"]];
 
 /***/ })
 

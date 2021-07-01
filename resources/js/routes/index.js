@@ -5,14 +5,10 @@ Vue.use(VueRouter);
 
 import { mantenimiento } from './mantenimiento';
 import { expediente } from './expediente';
-import { control } from './control';
-import { reporte } from './reporte';
 
 const routes = [
     mantenimiento,
-    control,
-    expediente,
-    reporte
+    expediente
 ];
 
 const router = new VueRouter({

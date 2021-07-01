@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
         $user->name              = 'admin';
         $user->apellido_paterno  = 'admin';
         $user->apellido_materno  = 'admin';
-        $user->email             = 'admin@hotmail.com';
+        $user->email             = 'admin@gmail.com';
         $user->password          = bcrypt('12345678');
         $user->save();
     }
