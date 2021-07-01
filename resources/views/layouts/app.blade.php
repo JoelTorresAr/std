@@ -34,7 +34,7 @@
                                     <div class="mu-header-top-left">
                                         <div class="mu-top-email">
                                             <i class="fa fa-envelope"></i>
-                                            <span>alcaldia@munijaen.gob.pe</span>
+                                            <span>msanjosedelourdes@gmail.com</span>
                                         </div>
                                         <div class="mu-top-phone">
                                             <i class="fa fa-phone"></i>

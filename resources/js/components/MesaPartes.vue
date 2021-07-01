@@ -19,24 +19,28 @@
               de facilitar los trámites administrativos con la entidad.
               <v-row justify="space-around">
                 <v-col cols="auto">
-                  <v-card class="rounded-0">
-                    <v-img
-                      style="width: 90px !important; heigth: 150px"
-                      src="/img/natural.png"
-                      v-on:click="openParte('NATURAL')"
-                    >
-                    </v-img>
-                  </v-card>
+                  <button>
+                    <v-card class="rounded-0">
+                      <v-img
+                        style="width: 90px !important; heigth: 150px"
+                        src="/img/natural.png"
+                        v-on:click="openParte('NATURAL')"
+                      >
+                      </v-img>
+                    </v-card>
+                  </button>
                 </v-col>
                 <v-col cols="auto">
-                  <v-card class="rounded-0">
-                    <v-img
-                      style="width: 90px !important; heigth: 150px"
-                      src="/img/juridica.png"
-                      v-on:click="openParte('JURIDICA')"
-                    >
-                    </v-img>
-                  </v-card>
+                  <button>
+                    <v-card class="rounded-0">
+                      <v-img
+                        style="width: 90px !important; heigth: 150px"
+                        src="/img/juridica.png"
+                        v-on:click="openParte('JURIDICA')"
+                      >
+                      </v-img>
+                    </v-card>
+                  </button>
                 </v-col>
               </v-row>
             </v-alert>

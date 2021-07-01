@@ -8,14 +8,14 @@ class MesaPartesController extends Controller
 {
     public function index()
     {
-        return view('mesaPartes');
+        return view('mesaPartes.index');
     }
     public function personaNatural()
     {
-        return view('mesaPartes');
+        return view('mesaPartes.personaNatural');
     }
     public function personaJuridica()
     {
-        return view('mesaPartes');
+        return view('mesaPartes.personaJuridica');
     }
 }
