@@ -11,10 +11,7 @@
               <v-card-title> Datos del solicitante </v-card-title>
               <v-card-text>
                 <v-alert
-                  border="left"
-                  colored-border
-                  color="deep-purple accent-4"
-                  elevation="0"
+                  color="green accent-1"
                   style="font-size: 13px !important"
                 >
                   <i class="far fa-check-square"></i>
@@ -45,13 +42,14 @@
                   considerada al día hábil siguiente.
                   <br />
                   <br />
-                  <v-btn x-small color="error"
-                    ><i class="fas fa-download"></i> Formato Único de Tramite
-                    Múltiple (FUTM)</v-btn
+                  <v-btn small color="error" class="my-2"
+                    ><i class="fas fa-download mr-2"></i> Formato Único de
+                    Tramite Múltiple (FUTM)</v-btn
                   >
-                  <v-btn x-small color="primary"
-                    ><i class="fas fa-download"></i> Declaración Jurada de Datos
-                    de Vehículo - Impuesto al Patrimonio Vehicular</v-btn
+                  <v-btn small color="primary" class="my-2"
+                    ><i class="fas fa-download mr-2"></i> Declaración Jurada de
+                    Datos de Vehículo <br />
+                    Impuesto al Patrimonio Vehicular</v-btn
                   >
                   <v-row justify="space-around" class="mt-5">
                     <v-col cols="auto">
@@ -67,13 +65,13 @@
                     </v-col>
                   </v-row>
                 </v-alert>
-                <v-form v-model="valid">
+                <v-form>
                   <v-container>
                     <v-row>
-                      <v-col cols="12" md="4">
+                      <v-col cols="4">
                         <v-text-field
                           v-model="editedItem.dni"
-                          :error="errors.dni"
+                          :error-messages="errors.dni"
                           dense
                           label="DNI"
                           required
@@ -81,35 +79,134 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="12" md="4">
+                      <v-col cols="4">
                         <v-text-field
                           v-model="editedItem.nombres"
-                          :error="errors.nombres"
+                          :error-messages="errors.nombres"
                           label="Nombres"
                           dense
                           required
                         ></v-text-field>
                       </v-col>
-                      <v-col cols="12" md="4">
+                      <v-col cols="4">
                         <v-text-field
                           v-model="editedItem.apellido_paterno"
-                          :error="errors.apellido_paterno"
+                          :error-messages="errors.apellido_paterno"
                           label="Apellido Paterno"
                           dense
                           required
                         ></v-text-field>
                       </v-col>
-
-                      <v-col cols="12" md="4">
+                      <v-col cols="4">
                         <v-text-field
                           v-model="editedItem.apellido_materno"
-                          :error="errors.apellido_materno"
+                          :error-messages="errors.apellido_materno"
                           label="Apellido Materno"
                           dense
                           required
                         ></v-text-field>
                       </v-col>
                     </v-row>
+                    <v-row>
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model="editedItem.correo"
+                          :error-messages="errors.correo"
+                          label="Correo Electrónico (*)"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model="editedItem.correo_verificacion"
+                          :error-messages="errors.correo_verificacion"
+                          label="Confirmar Correo (*)"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model="editedItem.telefono"
+                          :error-messages="errors.telefono"
+                          label="Teléfono (*)"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-text-field
+                          v-model="editedItem.domicilio"
+                          :error-messages="errors.domicilio"
+                          label="Dimicilio Legal (*)"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-alert dense text color="primary">
+                          <strong><b>DATOS DEL DOCUMENTO</b></strong>
+                        </v-alert>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="4">
+                        <v-select
+                          :items="entriesTiposDocumentos"
+                          v-model="editedItem.id_tipo_documento"
+                          :error-messages="errors.id_tipo_documento"
+                          label="Tipo Documento"
+                          dense
+                          outlined
+                        ></v-select>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model="editedItem.nro_documento"
+                          :error-messages="errors.nro_documento"
+                          label="N° de Documento"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model="editedItem.nro_folios"
+                          :error-messages="errors.nro_folios"
+                          label="N° de Folios"
+                          dense
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-textarea
+                          outlined
+                          hide-details
+                          v-model="editedItem.asunto"
+                          :error-messages="errors.asunto"
+                          label="Asunto"
+                        ></v-textarea>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-select
+                          :items="entriesTiposTramites"
+                          v-model="selected.tipo_tramite"
+                          hide-details
+                          label="Tipo Tramite"
+                          dense
+                          outlined
+                        ></v-select> </v-col
+                    ></v-row>
                   </v-container>
                 </v-form>
               </v-card-text>
@@ -125,6 +222,7 @@
 <script>
 export default {
   data: () => ({
+    valid: false,
     editedItem: {
       dni: null,
       nombres: null,
@@ -134,7 +232,16 @@ export default {
       correo_verificacion: null,
       telefono: null,
       domicilio: null,
+      id_tipo_documento: null,
+      nro_documento: null,
+      nro_folios: null,
+      asunto: null,
     },
+    selected: {
+      tipo_tramite: null,
+    },
+    entriesTiposDocumentos: [],
+    entriesTiposTramites: [],
     errors: [],
   }),
   mounted() {},
