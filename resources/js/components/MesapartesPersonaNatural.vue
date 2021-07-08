@@ -157,12 +157,15 @@
                     <v-row>
                       <v-col cols="4">
                         <v-select
+                          clearable
                           :items="entriesTiposDocumentos"
                           v-model="editedItem.id_tipo_documento"
                           :error-messages="errors.id_tipo_documento"
                           label="Tipo Documento"
                           dense
                           outlined
+                          item-value="id"
+                          item-text="id"
                         ></v-select>
                       </v-col>
                       <v-col cols="4">
@@ -200,13 +203,33 @@
                       <v-col cols="12">
                         <v-select
                           :items="entriesTiposTramites"
-                          v-model="selected.tipo_tramite"
+                          clearable
+                          v-model="editedItem.tipo_tramite"
                           hide-details
                           label="Tipo Tramite"
                           dense
+                          item-value="id"
+                          item-text="text"
                           outlined
                         ></v-select> </v-col
                     ></v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-card flat tile>
+                          <v-window v-model="editedItem.tipo_tramite">
+                            <v-window-item
+                              value="1"
+                            >NORMAL</v-window-item>
+                            <v-window-item
+                              value="2"
+                            >LIC. FUNCIONAMIENTO RIESGO MEDIO</v-window-item>
+                          </v-window>
+                            <v-window-item
+                              value="3"
+                            >LIC. FUNCIONAMIENTO BODEGAS</v-window-item>
+                        </v-card>
+                      </v-col>
+                    </v-row>
                   </v-container>
                 </v-form>
               </v-card-text>
@@ -236,12 +259,25 @@ export default {
       nro_documento: null,
       nro_folios: null,
       asunto: null,
+      tipo_tramite: null
     },
-    selected: {
-      tipo_tramite: null,
-    },
-    entriesTiposDocumentos: [],
-    entriesTiposTramites: [],
+    entriesTiposDocumentos: [
+      { id: "CARTA" },
+      { id: "OFICIO" },
+      { id: "MEMORANDO" },
+      { id: "INFORME" },
+      { id: "INVITACIÓN" },
+      { id: "FACTURA" },
+      { id: "GUIAS DE REMISIÓN" },
+      { id: "SOLICITUD" },
+      { id: "CITACIÓN" },
+      { id: "OTROS" },
+    ],
+    entriesTiposTramites: [
+      { id: '1', text: "NORMAL" },
+      { id: '2', text: "LIC. FUNCIONAMIENTO RIESGO MEDIO" },
+      { id: '3', text: "LIC. FUNCIONAMIENTO BODEGAS" },
+    ],
     errors: [],
   }),
   mounted() {},
