@@ -203,7 +203,7 @@
                       <v-col cols="12">
                         <v-select
                           :items="entriesTiposTramites"
-                          v-model="editedItem.tipo_tramite"
+                          v-model="editedItem.id_tipo_tramite"
                           hide-details
                           label="Tipo Tramite"
                           dense
@@ -215,7 +215,7 @@
                     <v-row>
                       <v-col cols="12">
                         <v-card flat tile>
-                          <v-window v-model="editedItem.tipo_tramite">
+                          <v-window v-model="editedItem.id_tipo_tramite">
                             <v-window-item value="1">
                               <v-row>
                                 <v-col cols="8" class="my-1 mr-1 ml-0">
@@ -315,7 +315,7 @@ export default {
       nro_documento: null,
       nro_folios: null,
       asunto: null,
-      tipo_tramite: null,
+      id_tipo_tramite: null,
       files: [{ file: null }],
     },
     entriesTiposDocumentos: [
