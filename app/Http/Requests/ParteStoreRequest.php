@@ -28,15 +28,15 @@ class ParteStoreRequest extends FormRequest
             'nombres'             => 'required|string',
             'apellido_paterno'    => 'required|string',
             'apellido_materno'    => 'required|string',
-            'correo'              => 'required|string',
-            'correo_verificacion' => 'required|string',
+            'correo'              => 'required|email|confirmed',
+            'correo_confirmation' => 'required|email',
             'telefono'            => 'required|string',
             'domicilio'           => 'required|string',
             'id_tipo_documento'   => 'required|string',
             'nro_documento'       => 'required|string',
             'nro_folios'          => 'required|string',
             'asunto'              => 'required|string',
-            'tipo_tramite'        => 'required|string',
+            'id_tipo_tramite'     => 'required|string',
             'file'                => 'required'
         ];
     }
