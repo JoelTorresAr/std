@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ParteStoreRequest;
 use App\Models\Parte;
+use App\Models\Solicitante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,14 +31,26 @@ class ParteController extends Controller
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';
             Storage::putFileAs($path,  $file, $name);
         }
-        $parte = new Parte();
-        $parte->id_tipo_documento = $request->id_tipo_documento;
-        $parte->nro_documento     = $request->nro_documento;
-        $parte->nro_folios        = $request->nro_folios;
-        $parte->asunto            = $request->asunto;
-        $parte->id_tipo_tramite   = $request->id_tipo_tramite;
-        $parte->files_path        = $path;
-        $parte->fecha_reg         = Carbon::now()->toDateTimeString();
+        $solicitante = null;
+        if (!$solicitante = Solicitante::where([['nro_documento', '=', $request->dni]])->first()) {
+            $solicitante = new Solicitante();
+            $solicitante->nro_documento      = $request->dni;
+            $solicitante->nombres            = $request->nombres;
+            $solicitante->apellido_paterno   = $request->apellido_paterno;
+            $solicitante->apellido_materno   = $request->apellido_materno;
+            $solicitante->correo             = $request->correo;
+            $solicitante->domicilio          = $request->domicilio;
+            $solicitante->save();
+        }
+        $parte    = new Parte();
+        $parte->id_tipo_documento        = $request->id_tipo_documento;
+        $parte->nro_documento            = $request->nro_documento;
+        $parte->nro_folios               = $request->nro_folios;
+        $parte->asunto                   = $request->asunto;
+        $parte->id_solicitante           = $solicitante->id;
+        $parte->id_tipo_tramite          = $request->id_tipo_tramite;
+        $parte->files_path               = $path;
+        $parte->fecha_reg                = Carbon::now()->toDateTimeString();
         $parte->save();
         return ['state' => 200, 'message' => 'registrado con exito'];
     }

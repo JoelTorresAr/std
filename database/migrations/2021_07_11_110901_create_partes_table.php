@@ -16,9 +16,9 @@ class CreatePartesTable extends Migration
         Schema::create('partes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_tipo_documento');
+            $table->unsignedBigInteger('id_solicitante');
             $table->integer('nro_documento');
             $table->integer('nro_folios');
-            $table->enum('tipo_persona', ['NATURAL', 'JURIDICA'])->default('NATURAL');
             $table->text('asunto');
             $table->unsignedBigInteger('id_tipo_tramite');
             $table->string('files_path');
@@ -26,6 +26,7 @@ class CreatePartesTable extends Migration
 
             $table->foreign('id_tipo_documento')->references('id')->on('tipos_documento');
             $table->foreign('id_tipo_tramite')->references('id')->on('tipos_tramite');
+            $table->foreign('id_solicitante')->references('id')->on('solicitantes');
         });
     }
 

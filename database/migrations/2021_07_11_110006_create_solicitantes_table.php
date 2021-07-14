@@ -15,14 +15,14 @@ class CreateSolicitantesTable extends Migration
     {
         Schema::create('solicitantes', function (Blueprint $table) {
             $table->id();
-            $table->string('nro_documento');
-            $table->string('tipo_solicitante');
+            $table->enum('tipo_persona', ['NATURAL', 'JURIDICA'])->default('NATURAL');
+            $table->string('nro_documento')->unique();
             $table->string('razon_social')->nullable();
             $table->string('nro_doc_representante_legal')->nullable();
             $table->string('nombres');
             $table->string('apellido_paterno');
             $table->string('apellido_materno');
-            $table->string('correo');
+            $table->string('correo')->unique();
             $table->string('domicilio');
         });
     }
