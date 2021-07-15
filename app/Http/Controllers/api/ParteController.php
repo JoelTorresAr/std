@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
+use Zip;
 
 class ParteController extends Controller
 {
@@ -31,7 +32,7 @@ class ParteController extends Controller
         foreach ($request->file('file') as $key => $file) {
             $numero = $key + 1;
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';
-            Storage::putFileAs($path,  $file, $name);
+            Storage::putFileAs($path,  $file, $file->getClientOriginalName());
         }
         $solicitante = null;
         if (!$solicitante = Solicitante::where([['nro_documento', '=', $request->dni]])->first()) {
@@ -58,18 +59,11 @@ class ParteController extends Controller
     }
     public function downloadDocumentos(Request $request)
     {
-        $zip = new ZipArchive();
         $zip_name = time() . ".zip"; // Zip name
-        $zip->open($zip_name,  ZipArchive::CREATE);
+        $zip = Zip::create($zip_name);
         $path = storage_path('app\documentos\natural\1\1\74436568\2021-07-14');
-        $files = File::allFiles($path);
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                $zip->addFile($file);
-            } else {
-                echo "file does not exist";
-            }
-        }
+        $zip->add($path, true);
         $zip->close();
+        return response()->download(public_path($zip_name))->deleteFileAfterSend();
     }
 }
