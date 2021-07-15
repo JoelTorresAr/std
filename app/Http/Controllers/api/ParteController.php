@@ -8,7 +8,9 @@ use App\Models\Parte;
 use App\Models\Solicitante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class ParteController extends Controller
 {
@@ -53,5 +55,21 @@ class ParteController extends Controller
         $parte->fecha_reg                = Carbon::now()->toDateTimeString();
         $parte->save();
         return ['state' => 200, 'message' => 'registrado con exito'];
+    }
+    public function downloadDocumentos(Request $request)
+    {
+        $zip = new ZipArchive();
+        $zip_name = time() . ".zip"; // Zip name
+        $zip->open($zip_name,  ZipArchive::CREATE);
+        $path = storage_path('app\documentos\natural\1\1\74436568\2021-07-14');
+        $files = File::allFiles($path);
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                $zip->addFile($file);
+            } else {
+                echo "file does not exist";
+            }
+        }
+        $zip->close();
     }
 }
