@@ -186,7 +186,7 @@ export default {
       { text: "Estado", value: "estado", sortable: false },
       { text: "Documento", value: "files_path", sortable: false },
       { text: "", value: "actions", sortable: false },
-      { text: '', value: 'data-table-expand' },
+      { text: 'Asunto', value: 'data-table-expand' },
     ];
     this.entriesItems = [
       {

@@ -93,7 +93,11 @@ class ParteController extends Controller
         $zip_name = time() . ".zip"; // Zip name
         $zip = Zip::create($zip_name);
         $path = storage_path($parte->files_path);
-        $zip->add($path, true);
+        $files = File::allFiles($path);
+        foreach ($files as $key => $file) {
+            $zip->add($file, true);
+        }
+        //$zip->add($path, true);
         $zip->close();
         return response()->download(public_path($zip_name))->deleteFileAfterSend();
     }
