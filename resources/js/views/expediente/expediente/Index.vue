@@ -4,11 +4,16 @@
       <v-data-table
         :headers="headers"
         :items="entriesItems"
+        dense
         :loading="loading"
         loading-text="Cargando..."
         class="elevation-1"
         disable-pagination
         :hide-default-footer="true"
+        :single-expand="singleExpand"
+        :expanded.sync="expanded"
+        item-key="id_parte"
+        show-expand
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -74,13 +79,25 @@
             </v-btn>
           </v-toolbar>
         </template>
+        <template v-slot:item.id_solicitante="{ item }">
+          {{
+            item.tipo_persona == "NATURAL"
+              ? `${item.apellido_paterno} ${item.apellido_materno} ${item.nombres}`
+              : `${item.razon_social}`
+          }}
+        </template>
         <template v-slot:item.estado="{ item }">
           <v-chip :color="item.estado === 'Abierto' ? 'green' : ''" x-small>
             <b>{{ item.estado }}</b></v-chip
           >
         </template>
-        <template v-slot:item.doc="{ item }">
-          <v-btn x-small outlined color="primary darken-1" class="mr-2"
+        <template v-slot:item.files_path="{ item }">
+          <v-btn
+            x-small
+            outlined
+            color="primary darken-1"
+            class="mr-2"
+            @click="downloadFiles(item)"
             >Descargar</v-btn
           >
         </template>
@@ -88,6 +105,9 @@
           <v-btn x-small outlined color="green darken-1" class="mr-2"
             >Editar</v-btn
           >
+        </template>
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">{{ item.asunto }}</td>
         </template>
       </v-data-table>
       <v-row>
@@ -148,21 +168,25 @@ export default {
       pageSize: 9,
     },
     actionForm: {
-        expediente: 'CREATE'
+      expediente: "CREATE",
     },
     itemSelected: null,
+    expanded: [],
+    singleExpand: true,
   }),
   mounted() {
     this.initialForm();
     this.headers = [
-      { text: "N°", value: "id", sortable: false },
-      { text: "Persona", value: "persona", sortable: false },
-      { text: "Asunto", value: "asunto", sortable: false },
-      { text: "Email", value: "email", sortable: false },
-      { text: "Tip. Doc.", value: "tipo_documento", sortable: false },
-      { text: "Fecha Creación", value: "created_at", sortable: false },
-      { text: "Documento", value: "doc", sortable: false },
+      { text: "N°", value: "id_parte", sortable: false },
+      { text: "Tip. Doc.", value: "tipo_doc", sortable: false },
+      { text: "Tip. Tramit.", value: "tipo_tram", sortable: false },
+      { text: "Persona", value: "id_solicitante", sortable: false },
+      { text: "Email", value: "correo", sortable: false },
+      { text: "Fecha Registro", value: "fecha_reg", sortable: false },
+      { text: "Estado", value: "estado", sortable: false },
+      { text: "Documento", value: "files_path", sortable: false },
       { text: "", value: "actions", sortable: false },
+      { text: '', value: 'data-table-expand' },
     ];
     this.entriesItems = [
       {
@@ -179,7 +203,7 @@ export default {
     ];
     this.searchTipesItems = [];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
-    //this.loadItems();
+    this.loadItems();
   },
   methods: {
     initialForm() {
@@ -201,7 +225,7 @@ export default {
       this.loading = true;
       this.entriesItems = [];
       axios
-        .post("/api/ejemplo", this.search)
+        .post("/api/parte/index", this.search)
         .then(({ data }) => {
           this.entriesItems = data.resultado.data;
           this.totalPages = data.resultado.last_page;
@@ -210,6 +234,9 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    downloadFiles(item) {
+      window.open(`/mesa_partes_virtual/download-files/${item.id}`, "_blank");
     },
   },
 };

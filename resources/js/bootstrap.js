@@ -3,11 +3,18 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
     window.Swal = require('sweetalert2');
+    window.Toastr = require('toastr');
+    window.Toastr.options = {
+        timeOut: 5000,
+        preventDuplicates: false,
+        preventOpenDuplicates: false,
+        positionClass: "toast-top-right",
+    };
     window.Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 2000,
+        timer: 5000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -16,7 +23,7 @@ try {
     });
 
     require('bootstrap');
-} catch (e) {}
+} catch (e) { }
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests

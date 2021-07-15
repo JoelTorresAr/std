@@ -15,6 +15,36 @@ use Zip;
 
 class ParteController extends Controller
 {
+    const nElementosPagina = 10;
+    public function index(Request $request)
+    {
+        $pageSize = $request->pagesize ?? self::nElementosPagina;
+        $search = (object) $request->all();
+        $tipo = $search->tipo;
+        $param = $search->param;
+        $whereRaw = "1 = 1";
+
+        if (strlen($param) > 0) {
+            $whereRaw = " $tipo = '$param'";
+        }
+
+        $data = Parte::select(
+            'partes.*',
+            'partes.id as id_parte',
+            'td.nombre as tipo_doc',
+            'tt.nombre as  tipo_tram',
+            'est.nombre as  estado',
+            'sol.*',
+        )
+            ->join('tipos_documento AS td', 'partes.id_tipo_documento', 'td.id')
+            ->join('tipos_tramite   AS tt', 'partes.id_tipo_tramite', 'tt.id')
+            ->join('solicitantes    AS sol', 'partes.id_solicitante', 'sol.id')
+            ->join('estados_parte   AS est', 'partes.id_estado', 'est.id')
+            ->whereRaw($whereRaw)
+            ->orderByRaw("partes.fecha_reg DESC")
+            ->paginate($pageSize);
+        return ['status' => 200, 'resultado' => $data];
+    }
     public function storeNatural(Request $request)
     {
         $array = $request->all();
@@ -28,7 +58,7 @@ class ParteController extends Controller
         $newRequest = new Request($array);
         $this->validate($newRequest, ParteStoreRequest::rulesStore(), [], []);
         $date = Carbon::now();
-        $path = 'documentos/natural/' . $request->id_tipo_tramite . "/" . $request->id_tipo_documento . "/" . $request->dni . "/" . $date->toDateString();
+        $path = 'documentos/natural/' . $request->id_tipo_tramite . "/" . $request->id_tipo_documento . "/" . $request->dni . "/" . $date->toDateTimeString();
         foreach ($request->file('file') as $key => $file) {
             $numero = $key + 1;
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';
@@ -42,6 +72,7 @@ class ParteController extends Controller
             $solicitante->apellido_paterno   = $request->apellido_paterno;
             $solicitante->apellido_materno   = $request->apellido_materno;
             $solicitante->correo             = $request->correo;
+            $solicitante->telefono           = $request->telefono;
             $solicitante->domicilio          = $request->domicilio;
             $solicitante->save();
         }
@@ -52,16 +83,16 @@ class ParteController extends Controller
         $parte->asunto                   = $request->asunto;
         $parte->id_solicitante           = $solicitante->id;
         $parte->id_tipo_tramite          = $request->id_tipo_tramite;
-        $parte->files_path               = $path;
+        $parte->files_path               = "app/" . $path;
         $parte->fecha_reg                = Carbon::now()->toDateTimeString();
         $parte->save();
         return ['state' => 200, 'message' => 'registrado con exito'];
     }
-    public function downloadDocumentos(Request $request)
+    public function downloadDocumentos(Parte $parte)
     {
         $zip_name = time() . ".zip"; // Zip name
         $zip = Zip::create($zip_name);
-        $path = storage_path('app\documentos\natural\1\1\74436568\2021-07-14');
+        $path = storage_path($parte->files_path);
         $zip->add($path, true);
         $zip->close();
         return response()->download(public_path($zip_name))->deleteFileAfterSend();

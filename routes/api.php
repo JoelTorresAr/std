@@ -24,6 +24,10 @@ Route::group(['namespace' => 'api'], function () {
         Route::post('store', 'RolController@store');
     });
     Route::prefix('parte')->group(function () {
+        Route::post('index', 'ParteController@index');
         Route::post('persona-natural/store', 'ParteController@storeNatural');
+    });
+    Route::prefix('solicitante')->group(function () {
+        Route::post('search', 'SolicitanteController@search');
     });
 });

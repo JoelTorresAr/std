@@ -17,6 +17,7 @@ class CreatePartesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_tipo_documento');
             $table->unsignedBigInteger('id_solicitante');
+            $table->unsignedBigInteger('id_estado')->default(1);
             $table->integer('nro_documento');
             $table->integer('nro_folios');
             $table->text('asunto');
@@ -27,6 +28,7 @@ class CreatePartesTable extends Migration
             $table->foreign('id_tipo_documento')->references('id')->on('tipos_documento');
             $table->foreign('id_tipo_tramite')->references('id')->on('tipos_tramite');
             $table->foreign('id_solicitante')->references('id')->on('solicitantes');
+            $table->foreign('id_estado')->references('id')->on('estados_parte');
         });
     }
 

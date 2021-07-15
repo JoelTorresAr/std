@@ -22,7 +22,8 @@ class CreateSolicitantesTable extends Migration
             $table->string('nombres');
             $table->string('apellido_paterno');
             $table->string('apellido_materno');
-            $table->string('correo')->unique();
+            $table->string('correo');
+            $table->string('telefono');
             $table->string('domicilio');
         });
     }

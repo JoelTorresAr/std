@@ -74,7 +74,10 @@
                           :error-messages="errors.dni"
                           dense
                           label="DNI"
+                          append-outer-icon="mdi-magnify"
+                          @click:append-outer="searchSolicitante()"
                           required
+                          @change="searchSolicitante()"
                         ></v-text-field>
                       </v-col>
                     </v-row>
@@ -378,10 +381,8 @@ export default {
           },
         })
         .then(({ data }) => {
-          Toast.fire({
-            icon: "success",
-            title: data.message,
-          });
+          Toastr.success(data.message);
+          this.clearForm();
         })
         .catch((error) => {
           Toast.fire({
@@ -395,6 +396,38 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    searchSolicitante() {
+      axios
+        .post("/api/solicitante/search", { dni: this.editedItem.dni })
+        .then(({ data }) => {
+          if (data.resultado != null) {
+            delete data.resultado.nro_documento;
+            Object.assign(this.editedItem, data.resultado);
+          }
+          //this.$store.dispatch("asignQueryParams", this.search);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    clearForm() {
+      this.editedItem = {
+        dni: null,
+        nombres: null,
+        apellido_paterno: null,
+        apellido_materno: null,
+        correo: null,
+        correo_confirmation: null,
+        telefono: null,
+        domicilio: null,
+        id_tipo_documento: null,
+        nro_documento: null,
+        nro_folios: null,
+        asunto: null,
+        id_tipo_tramite: 1,
+        files: [{ file: null }],
+      };
     },
   },
 };
