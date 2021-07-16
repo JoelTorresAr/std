@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Classes\Zip\Zip;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ParteStoreRequest;
 use App\Models\Parte;
@@ -10,8 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use ZipArchive;
-use Zip;
 
 class ParteController extends Controller
 {
