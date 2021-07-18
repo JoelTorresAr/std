@@ -60,9 +60,9 @@
                       "
                       label="Estados"
                       v-model="search.estado"
-                      :items="estadosBusquedasOrd"
+                      :items="entriesEstados"
                       item-value="id"
-                      item-text="value"
+                      item-text="nombre"
                       persistent-hint
                     ></v-select>
                   </div>
@@ -181,6 +181,7 @@ export default {
       param: "",
       estadoBusSelec: "0",
       page: 1,
+      estado: null,
       totalPages: 0,
       pageSize: 9,
     },
@@ -208,6 +209,7 @@ export default {
       { text: "N°", value: "id_parte", sortable: false },
       { text: "Tip. Doc.", value: "tipo_doc", sortable: false },
       { text: "Tip. Tramit.", value: "tipo_tram", sortable: false },
+      { text: "Tip. Persona", value: "tipo_persona", sortable: false },
       { text: "Persona", value: "id_solicitante", sortable: false },
       { text: "Email", value: "correo", sortable: false },
       { text: "Fecha Registro", value: "fecha_reg", sortable: false },

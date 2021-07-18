@@ -21,6 +21,10 @@ class MesaPartesController extends Controller
     }
     public function personaJuridica()
     {
-        return view('mesaPartes.personaJuridica');
+        $tipos_documento = DB::table('tipos_documento')->select('id', 'nombre')->get();
+        $tipos_documento = $tipos_documento->toArray();
+        $tipos_tramite = DB::table('tipos_tramite')->select('id', 'nombre')->get();
+        $tipos_tramite = $tipos_tramite->toArray();
+        return view('mesaPartes.personaJuridica', compact('tipos_documento', 'tipos_tramite'));
     }
 }
