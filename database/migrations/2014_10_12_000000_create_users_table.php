@@ -33,6 +33,13 @@ class CreateUsersTable extends Migration
         $user->email             = 'admin@gmail.com';
         $user->password          = bcrypt('12345678');
         $user->save();
+        $user = new User();
+        $user->name              = 'mesa';
+        $user->apellido_paterno  = 'partes';
+        $user->apellido_materno  = 'partes';
+        $user->email             = 'Mesapartes@gmail.com ';
+        $user->password          = bcrypt('147852369');
+        $user->save();
     }
 
     /**
