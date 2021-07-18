@@ -18,7 +18,7 @@ class CreatePartesTable extends Migration
             $table->unsignedBigInteger('id_tipo_documento');
             $table->unsignedBigInteger('id_solicitante');
             $table->unsignedBigInteger('id_estado')->default(1);
-            $table->integer('nro_documento');
+            $table->integer('nro_documento')->nullable();
             $table->integer('nro_folios');
             $table->text('asunto');
             $table->unsignedBigInteger('id_tipo_tramite');

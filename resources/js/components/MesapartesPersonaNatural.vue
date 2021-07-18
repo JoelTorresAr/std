@@ -173,16 +173,6 @@
                       </v-col>
                       <v-col cols="4">
                         <v-text-field
-                          v-model="editedItem.nro_documento"
-                          :error-messages="errors.nro_documento"
-                          label="N° de Documento"
-                          dense
-                          required
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col cols="4">
-                        <v-text-field
                           v-model="editedItem.nro_folios"
                           :error-messages="errors.nro_folios"
                           label="N° de Folios"

@@ -33,7 +33,7 @@ class ParteStoreRequest extends FormRequest
             'telefono'            => 'required|string',
             'domicilio'           => 'required|string',
             'id_tipo_documento'   => 'required|string',
-            'nro_documento'       => 'required|string',
+            'nro_documento'       => 'nullable',
             'nro_folios'          => 'required|string',
             'asunto'              => 'required|string',
             'id_tipo_tramite'     => 'required|string',
