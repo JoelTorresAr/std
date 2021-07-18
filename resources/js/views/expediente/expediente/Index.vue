@@ -32,8 +32,8 @@
                       label="Tip. Busqusqueda"
                       v-model="search.tipo"
                       :items="searchTipesItems"
-                      item-value="id"
-                      item-text="value"
+                      item-value="value"
+                      item-text="text"
                       persistent-hint
                     ></v-select>
                   </div>
@@ -46,6 +46,26 @@
                     hide-details
                     v-on:keyup.enter="loadItems"
                   ></v-text-field>
+                  <div style="width: 130px !important">
+                    <v-select
+                      dense
+                      solo
+                      :dark="search.estado === 'Incompleto'"
+                      hide-details
+                      single-line
+                      :class="
+                        search.estado === 'Incompleto'
+                          ? 'form-control error'
+                          : 'form-control'
+                      "
+                      label="Estados"
+                      v-model="search.estado"
+                      :items="estadosBusquedasOrd"
+                      item-value="id"
+                      item-text="value"
+                      persistent-hint
+                    ></v-select>
+                  </div>
                   <v-btn
                     depressed
                     class="btn btn-outline-secondary form-control"
@@ -68,15 +88,6 @@
               </v-col>
             </v-row>
             <v-spacer></v-spacer>
-            <v-btn
-              depressed
-              color="primary"
-              class="float-right text-xs mr-2"
-              :loading="loading"
-              @click="showForm.expediente = true"
-            >
-              <i class="fa fa-plus"></i> &nbsp; REGISTRAR
-            </v-btn>
           </v-toolbar>
         </template>
         <template v-slot:item.id_solicitante="{ item }">
@@ -102,8 +113,13 @@
           >
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-btn x-small outlined color="green darken-1" class="mr-2"
-            >Editar</v-btn
+          <v-btn
+            x-small
+            outlined
+            color="green darken-1"
+            class="mr-2"
+            @click="openForm('UPDATE', item)"
+            >Actualizar Estado</v-btn
           >
         </template>
         <template v-slot:expanded-item="{ headers, item }">
@@ -136,6 +152,7 @@
     <expediente-form
       :dialog.sync="showForm.expediente"
       :actions.sync="actionForm.expediente"
+      :item="itemSelected"
     ></expediente-form>
   </v-card>
 </template>
@@ -172,10 +189,21 @@ export default {
     },
     itemSelected: null,
     expanded: [],
+    entriesEstados: [],
     singleExpand: true,
   }),
+  watch: {
+    "actionForm.expediente": {
+      handler: function (val, oldVal) {
+        if (val === "SUCCESS") {
+          this.loadItems();
+        }
+      },
+    },
+  },
   mounted() {
     this.initialForm();
+    this.loadEstados();
     this.headers = [
       { text: "N°", value: "id_parte", sortable: false },
       { text: "Tip. Doc.", value: "tipo_doc", sortable: false },
@@ -186,7 +214,7 @@ export default {
       { text: "Estado", value: "estado", sortable: false },
       { text: "Documento", value: "files_path", sortable: false },
       { text: "", value: "actions", sortable: false },
-      { text: 'Asunto', value: 'data-table-expand' },
+      { text: "Asunto", value: "data-table-expand" },
     ];
     this.entriesItems = [
       {
@@ -201,7 +229,10 @@ export default {
           .replace(",", "")}`,
       },
     ];
-    this.searchTipesItems = [];
+    this.searchTipesItems = [
+      { value: "sol.nro_documento", text: "DNI" },
+      { value: "ruc", text: "RUC" },
+    ];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
     this.loadItems();
   },
@@ -220,6 +251,20 @@ export default {
       this.search.page = 1;
       this.loadItems();
     },
+    loadEstados() {
+      //PAGINATED ITEMS OF PRESCRIPCIONES
+      this.loading = true;
+      this.entriesEstados = [];
+      axios
+        .post("/api/parte/estados-select", this.search)
+        .then(({ data }) => {
+          this.entriesEstados = data.resultado;
+          //this.$store.dispatch("asignQueryParams", this.search);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     loadItems() {
       //PAGINATED ITEMS OF PRESCRIPCIONES
       this.loading = true;
@@ -237,6 +282,11 @@ export default {
     },
     downloadFiles(item) {
       window.open(`/mesa_partes_virtual/download-files/${item.id}`, "_blank");
+    },
+    openForm(action = "UPDATE", item = {}) {
+      this.showForm.expediente = true;
+      this.actionForm.expediente = action;
+      this.itemSelected = item;
     },
   },
 };

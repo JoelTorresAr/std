@@ -39,49 +39,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     dialog: {
@@ -119,7 +76,7 @@ __webpack_require__.r(__webpack_exports__);
           return 1 <= value <= 15 || "Min 1 - Max 15";
         }
       },
-      entriesUbicaciones: [],
+      entriesEstados: [],
       errors: []
     };
   },
@@ -162,17 +119,31 @@ __webpack_require__.r(__webpack_exports__);
   watch: {},
   mounted: function mounted() {
     this.initState();
+    this.loadEstados();
   },
   methods: {
     initState: function initState() {},
-    save: function save() {
+    loadEstados: function loadEstados() {
       var _this = this;
+
+      //PAGINATED ITEMS OF PRESCRIPCIONES
+      this.loading = true;
+      this.entriesEstados = [];
+      axios.post("/api/parte/estados-select", this.search).then(function (_ref) {
+        var data = _ref.data;
+        _this.entriesEstados = data.resultado; //this.$store.dispatch("asignQueryParams", this.search);
+      })["finally"](function () {
+        _this.loading = false;
+      });
+    },
+    save: function save() {
+      var _this2 = this;
 
       var id = this.$store.getters.GET_USER_ID;
       this.editedItem.id_empleado_apertura = id;
-      var url_action = this.actions === "UPDATE" ? "/api/oxigeno/prescripcion/update" : "/api/oxigeno/prescripcion/store";
-      axios.post(url_action, this.editedItem).then(function (_ref) {
-        var data = _ref.data;
+      var url_action = this.actions === "UPDATE" ? "/api/parte/estado-update" : "/api/oxigeno/prescripcion/store";
+      axios.post(url_action, this.editedItem).then(function (_ref2) {
+        var data = _ref2.data;
 
         if (data.status == "200") {
           Toast.fire({
@@ -180,9 +151,9 @@ __webpack_require__.r(__webpack_exports__);
             title: data.message
           });
 
-          _this.$emit("update:actions", "SUCCESS");
+          _this2.$emit("update:actions", "SUCCESS");
 
-          _this.dialogState = false;
+          _this2.dialogState = false;
         } else {
           Toast.fire({
             icon: "error",
@@ -197,7 +168,7 @@ __webpack_require__.r(__webpack_exports__);
 
         if (error.response.status == 422) {
           //console.log(errors);
-          _this.errors = error.response.data.errors;
+          _this2.errors = error.response.data.errors;
         } // console.log(error.config);
 
       });
@@ -219,7 +190,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.input-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  width: 10rem !important;\r\n  font-size: 0.8rem !important;\n}\n.span-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  width: 7rem !important;\r\n  font-size: 0.8rem !important;\n}\n.width-input-x-small[data-v-038ed7ca] {\r\n  width: 10rem !important;\r\n  font-size: 0.8rem !important;\n}\n.height-input-x-small[data-v-038ed7ca] {\r\n  height: 1.5rem !important;\r\n  font-size: 0.8rem !important;\n}\n#btn-x-small[data-v-038ed7ca] {\r\n  width: 1.5rem;\r\n  height: 1.5rem;\n}\r\n", ""]);
+exports.push([module.i, "\n.input-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  width: 10rem !important;\n  font-size: 0.8rem !important;\n}\n.span-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  width: 7rem !important;\n  font-size: 0.8rem !important;\n}\n.width-input-x-small[data-v-038ed7ca] {\n  width: 10rem !important;\n  font-size: 0.8rem !important;\n}\n.height-input-x-small[data-v-038ed7ca] {\n  height: 1.5rem !important;\n  font-size: 0.8rem !important;\n}\n#btn-x-small[data-v-038ed7ca] {\n  width: 1.5rem;\n  height: 1.5rem;\n}\n", ""]);
 
 // exports
 
@@ -306,102 +277,22 @@ var render = function() {
                       _c("v-autocomplete", {
                         attrs: {
                           solo: "",
-                          label: "Persona",
-                          items: _vm.entriesUbicaciones,
-                          "error-messages": _vm.errors.cantidad,
-                          "item-value": "cantidad",
-                          "item-text": "descripcion",
-                          clearable: ""
+                          label: "Estado expediente",
+                          items: _vm.entriesEstados,
+                          "item-value": "id",
+                          "item-text": "nombre"
                         },
                         model: {
-                          value: _vm.editedItem.cantidad,
+                          value: _vm.editedItem.id_estado,
                           callback: function($$v) {
-                            _vm.$set(_vm.editedItem, "cantidad", $$v)
+                            _vm.$set(_vm.editedItem, "id_estado", $$v)
                           },
-                          expression: "editedItem.cantidad"
+                          expression: "editedItem.id_estado"
                         }
                       })
                     ],
                     1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { staticClass: "py-1 px-1", attrs: { cols: "12" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: {
-                          label: "Asunto",
-                          "error-messages": _vm.errors.nombre,
-                          disabled: _vm.actions === "UPDATE"
-                        },
-                        model: {
-                          value: _vm.editedItem.nombre,
-                          callback: function($$v) {
-                            _vm.$set(_vm.editedItem, "nombre", $$v)
-                          },
-                          expression: "editedItem.nombre"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { staticClass: "py-1 px-1", attrs: { cols: "12" } },
-                    [
-                      _c("v-text-field", {
-                        attrs: {
-                          label: "Correo",
-                          "error-messages": _vm.errors.nombre,
-                          disabled: _vm.actions === "UPDATE"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { staticClass: "py-1 px-1", attrs: { cols: "6" } },
-                    [
-                      _c("v-autocomplete", {
-                        attrs: {
-                          solo: "",
-                          label: "Tip. Doc.",
-                          items: _vm.entriesUbicaciones,
-                          "error-messages": _vm.errors.cantidad,
-                          "item-value": "cantidad",
-                          "item-text": "descripcion",
-                          clearable: ""
-                        },
-                        model: {
-                          value: _vm.editedItem.cantidad,
-                          callback: function($$v) {
-                            _vm.$set(_vm.editedItem, "cantidad", $$v)
-                          },
-                          expression: "editedItem.cantidad"
-                        }
-                      })
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("v-col", { attrs: { cols: "12" } }, [
-                    _c("label", [
-                      _c("input", {
-                        ref: "file",
-                        staticStyle: { width: "700px" },
-                        attrs: {
-                          accept:
-                            ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel",
-                          type: "file",
-                          id: "file"
-                        }
-                      })
-                    ])
-                  ])
+                  )
                 ],
                 1
               )

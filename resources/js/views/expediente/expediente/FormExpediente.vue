@@ -9,56 +9,13 @@
           <v-col cols="12" class="py-1 px-1">
             <v-autocomplete
               solo
-              label="Persona"
-              v-model="editedItem.cantidad"
-              :items="entriesUbicaciones"
-              :error-messages="errors.cantidad"
-              item-value="cantidad"
-              item-text="descripcion"
-              clearable
+              label="Estado expediente"
+              v-model="editedItem.id_estado"
+              :items="entriesEstados"
+              item-value="id"
+              item-text="nombre"
             >
             </v-autocomplete>
-          </v-col>
-          <v-col cols="12" class="py-1 px-1">
-            <v-text-field
-              label="Asunto"
-              v-model="editedItem.nombre"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col cols="12" class="py-1 px-1">
-            <v-text-field
-              label="Correo"
-              :error-messages="errors.nombre"
-              :disabled="actions === 'UPDATE'"
-            >
-            </v-text-field>
-          </v-col>
-          <v-col cols="6" class="py-1 px-1">
-            <v-autocomplete
-              solo
-              label="Tip. Doc."
-              v-model="editedItem.cantidad"
-              :items="entriesUbicaciones"
-              :error-messages="errors.cantidad"
-              item-value="cantidad"
-              item-text="descripcion"
-              clearable
-            >
-            </v-autocomplete>
-          </v-col>
-          <v-col cols="12">
-            <label>
-              <input
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                type="file"
-                id="file"
-                ref="file"
-                style="width: 700px"
-              />
-            </label>
           </v-col>
         </v-row>
       </v-card-text>
@@ -98,7 +55,7 @@ export default {
     rules: {
       counter: (value) => 1 <= value <= 15 || "Min 1 - Max 15",
     },
-    entriesUbicaciones: [],
+    entriesEstados: [],
     errors: [],
   }),
   computed: {
@@ -141,15 +98,30 @@ export default {
   watch: {},
   mounted() {
     this.initState();
+    this.loadEstados();
   },
   methods: {
     initState() {},
+    loadEstados() {
+      //PAGINATED ITEMS OF PRESCRIPCIONES
+      this.loading = true;
+      this.entriesEstados = [];
+      axios
+        .post("/api/parte/estados-select", this.search)
+        .then(({ data }) => {
+          this.entriesEstados = data.resultado;
+          //this.$store.dispatch("asignQueryParams", this.search);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     save() {
       let id = this.$store.getters.GET_USER_ID;
       this.editedItem.id_empleado_apertura = id;
       let url_action =
         this.actions === "UPDATE"
-          ? "/api/oxigeno/prescripcion/update"
+          ? "/api/parte/estado-update"
           : "/api/oxigeno/prescripcion/store";
       axios
         .post(url_action, this.editedItem)

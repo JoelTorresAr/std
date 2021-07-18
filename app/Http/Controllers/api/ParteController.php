@@ -9,6 +9,7 @@ use App\Models\Parte;
 use App\Models\Solicitante;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,8 +24,18 @@ class ParteController extends Controller
         $param = $search->param;
         $whereRaw = "1 = 1";
 
-        if (strlen($param) > 0) {
-            $whereRaw = " $tipo = '$param'";
+        switch ($tipo) {
+            case 'sol.nro_documento':
+                $whereRaw = " $tipo = '$param' AND tipo_persona = 'NATURAL'";
+                break;
+
+            case 'ruc':
+                $whereRaw = " $tipo = '$param' AND tipo_persona = 'JURIDiCA'";
+                break;
+
+            default:
+                # code...
+                break;
         }
 
         $data = Parte::select(
@@ -42,6 +53,7 @@ class ParteController extends Controller
             ->whereRaw($whereRaw)
             ->orderByRaw("partes.fecha_reg DESC")
             ->paginate($pageSize);
+
         return ['status' => 200, 'resultado' => $data];
     }
     public function storeNatural(Request $request)
@@ -99,5 +111,19 @@ class ParteController extends Controller
         //$zip->add($path, true);
         $zip->close();
         return response()->download(public_path($zip_name))->deleteFileAfterSend();
+    }
+    public function estados(Request $request)
+    {
+        $data = DB::table('estados_parte')->get();
+
+        return ['status' => 200, 'resultado' => $data];
+    }
+    public function estadoUpdate(Request $request)
+    {
+        $parte = Parte::find($request->id);
+        $parte->id_estado = $request->id_estado;
+        $parte->save();
+
+        return ['status' => 200, 'message' => 'Estado actualizado con exito'];
     }
 }
