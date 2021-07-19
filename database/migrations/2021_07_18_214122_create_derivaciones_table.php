@@ -15,7 +15,7 @@ class CreateDerivacionesTable extends Migration
     {
         Schema::create('derivaciones', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_parte')
+            $table->unsignedBigInteger('id_parte');
         });
     }
 
