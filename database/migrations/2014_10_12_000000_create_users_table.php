@@ -22,9 +22,12 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('id_area')->nullable();
             $table->boolean('estado')->default(true);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('id_area')->references('id')->on('areas');
         });
         $user = new User();
         $user->name              = 'admin';
