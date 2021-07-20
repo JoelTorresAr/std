@@ -16,6 +16,10 @@ class CreateDerivacionesTable extends Migration
         Schema::create('derivaciones', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_parte');
+            $table->unsignedBigInteger('id_estado_parte');
+            $table->unsignedBigInteger('id_area');
+            $table->dateTime('fecha_reg', 0)->useCurrent();
+            $table->text('respuesta')->nullable();
         });
     }
 

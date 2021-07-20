@@ -377,6 +377,7 @@ export default {
     },
     registrar() {
       this.loading = true;
+      this.errors = [];
       let formData = new FormData();
       this.editedItem.files.forEach((file, index) => {
         if (file.file) {
