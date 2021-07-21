@@ -73,6 +73,7 @@ class ParteController extends Controller
         foreach ($request->file('file') as $key => $file) {
             $numero = $key + 1;
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';
+            dd($file->getClientOriginalName());
             Storage::putFileAs($path,  $file, $file->getClientOriginalName());
         }
         $solicitante = null;
@@ -145,8 +146,9 @@ class ParteController extends Controller
         $parte->save();
         return ['state' => 200, 'message' => 'registrado con exito'];
     }
-    public function downloadDocumentos(Parte $parte)
+    public function downloadDocumentos(Request $request)
     {
+        $parte = Parte::find($request->id);
         $zip_name = time() . ".zip"; // Zip name
         $zip = Zip::create($zip_name);
         $path = storage_path($parte->files_path);

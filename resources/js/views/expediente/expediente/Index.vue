@@ -283,7 +283,7 @@ export default {
         });
     },
     downloadFiles(item) {
-      window.open(`/mesa_partes_virtual/download-files/${item.id}`, "_blank");
+      window.open(`/mesa_partes_virtual/download-files?id=${item.id_parte}`, "_blank");
     },
     openForm(action = "UPDATE", item = {}) {
       this.showForm.expediente = true;
