@@ -73,7 +73,6 @@ class ParteController extends Controller
         foreach ($request->file('file') as $key => $file) {
             $numero = $key + 1;
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';
-            dd($file->getClientOriginalName());
             Storage::putFileAs($path,  $file, $file->getClientOriginalName());
         }
         $solicitante = null;
