@@ -20,7 +20,7 @@ class CreateAreasTable extends Migration
 
             $table->foreign('id_unidad_organica')->references('id')->on('unidades_organicas');
         });
-        DB::table('unidades_organicas')->insert([
+        DB::table('areas')->insert([
             ['nombre' => 'Area 1', 'id_unidad_organica' => 1],
             ['nombre' => 'Area 2', 'id_unidad_organica' => 1],
             ['nombre' => 'Area 3', 'id_unidad_organica' => 1],
@@ -34,6 +34,7 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
+        DB::table('areas')->delete();
         Schema::dropIfExists('areas');
     }
 }

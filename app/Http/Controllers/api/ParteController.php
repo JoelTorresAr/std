@@ -112,7 +112,7 @@ class ParteController extends Controller
         $newRequest = new Request($array);
         $this->validate($newRequest, ParteStoreRequest::rulesStore(), [], []);
         $date = Carbon::now();
-        $path = 'documentos/natural/' . $request->id_tipo_tramite . "/" . $request->id_tipo_documento . "/" . $request->dni . "/" . time();
+        $path = 'documentos/juridica/' . $request->id_tipo_tramite . "/" . $request->id_tipo_documento . "/" . $request->dni . "/" . time();
         foreach ($request->file('file') as $key => $file) {
             $numero = $key + 1;
             $name = 'documento N° ' . $request->nro_documento . " - $numero" . '.pdf';

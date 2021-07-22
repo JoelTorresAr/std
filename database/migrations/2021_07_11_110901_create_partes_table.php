@@ -21,6 +21,7 @@ class CreatePartesTable extends Migration
             $table->integer('nro_documento')->nullable();
             $table->integer('nro_folios');
             $table->text('asunto');
+            $table->boolean('derivado')->default(false);
             $table->unsignedBigInteger('id_tipo_tramite');
             $table->string('files_path');
             $table->dateTime('fecha_reg', 0)->useCurrent();
