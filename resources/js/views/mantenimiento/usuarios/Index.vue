@@ -27,8 +27,8 @@
                       label="Tip. Busqusqueda"
                       v-model="search.tipo"
                       :items="searchTipesItems"
-                      item-value="id"
-                      item-text="value"
+                      item-value="value"
+                      item-text="text"
                       persistent-hint
                     ></v-select>
                   </div>
@@ -133,7 +133,7 @@ export default {
       usuario: false,
     },
     search: {
-      tipo: "",
+      tipo: "ApeNom",
       param: "",
       estadoBusSelec: "0",
       page: 1,
@@ -178,7 +178,7 @@ export default {
           .replace(",", "")}`,
       },
     ];
-    this.searchTipesItems = [];
+    this.searchTipesItems = [{ value: "ApeNom", text: "Apell. y Nombre" }];
     //this.search = await this.$store.dispatch("loadQueryParams", this.search);
     this.loadItems();
   },
@@ -198,7 +198,6 @@ export default {
       this.loadItems();
     },
     loadItems() {
-      //PAGINATED ITEMS OF PRESCRIPCIONES
       this.loading = true;
       this.entriesItems = [];
       axios
@@ -211,6 +210,11 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    limpiar() {
+      this.search.param = "";
+      this.search.page = 1;
+      this.loadItems();
     },
   },
 };

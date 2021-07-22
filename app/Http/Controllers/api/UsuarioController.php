@@ -17,10 +17,16 @@ class UsuarioController extends Controller
         $param = $search->param;
         $whereRaw = "1 = 1";
 
-        if (strlen($param) > 0) {
-            $whereRaw = " $tipo = '$param'";
-        }
+        switch ($tipo) {
+            case 'ApeNom':
+                $whereRaw = "upper(apellido_paterno + ' ' + apellido_materno + ' '
+                + COALESCE(name,'')) like upper('%' +'" . $param . "' + '%')";
+                break;
 
+            default:
+                $whereRaw = " $tipo = '$param'";
+                break;
+        }
         $data = User::whereRaw($whereRaw)
             ->orderByRaw("apellido_paterno DESC, apellido_materno DESC, name DESC")
             ->paginate($pageSize);
@@ -33,8 +39,8 @@ class UsuarioController extends Controller
             'name'                   => ['required'],
             'apellido_paterno'       => ['required'],
             'apellido_materno'       => ['required'],
-            'password'               => ['required','min:8'],
-            'password_confirmation'  => ['required','min:8','same:password'],
+            'password'               => ['required', 'min:8'],
+            'password_confirmation'  => ['required', 'min:8', 'same:password'],
         ];
         $this->validate($request, $rules, ['password_confirmation.same' => 'La contraseña de confirmacion no coincide'], []);
         $user = new User();
