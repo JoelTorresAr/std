@@ -17,6 +17,9 @@ class CreateUnidadesOrganicasTable extends Migration
             $table->id();
             $table->string('nombre');
         });
+        DB::table('unidades_organicas')->insert([
+            ['nombre' => 'Municipalidad de San Jose de Lourdes'],
+        ]);
     }
 
     /**
